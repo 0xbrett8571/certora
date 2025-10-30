@@ -7,10 +7,11 @@ the system from different points of view. In our case, these will
 be our types of properties.
 We split properties into 5 main types:
 
-* Valid States
-* State Transitions
-* Variable Transitions
-* High-Level Properties
+- Valid States
+- State Transitions
+- Variable Transitions
+- High-Level Properties
+- Demonstrating real impact — theft, freezing funds, governance takeover
 
 Thought of the day: in order to create a good
 property, you need to think like a good property.
@@ -22,12 +23,13 @@ define the possible values that the system's variables can take.
 We call these Valid States.
 For example, a system can be in one of the following states:
 
-* doesn't exist
-* was created
-* is active
-* is finished
+- doesn't exist
+- was created
+- is active
+- is finished
 
 ## VALID STATES
+
 Developers often rely on the valid states implicitly or explicitly
 in the system's workflow. Therefore, unintentional behavior can
 occur if the system can break out of the intended valid states,
@@ -74,6 +76,7 @@ invariant oneStateAtATime(bytes32 meetingId)
     meetingPending(meetingId) && !meetingStarted(meetingId)
     || !meetingPending(meetingId) && meetingStarted(meetingId)
 ```
+
 This is a simplified version of the example code. There are 5 valid states
 in the system. The inv will be fully correct only if we extend it to include
 all combinations of the 5 states.
@@ -132,6 +135,7 @@ rule depositIncreaseOnly(uint256 amount, env e){
 ```
 
 ## HIGH-LEVEL PROPERTIES
+
 Probably the most powerful type of properties is the
 high-level property.
 
@@ -154,13 +158,34 @@ This property makes sure that no assets are disappearing or
 being created out of nowhere (unintentionally). We often call
 this property solvency.
 
+Demonstrating real impact — theft, freezing funds, governance takeover, etc. A "promise" is a statement about the protocol that must always be true for it to be secure. If we can prove it's false, we've found an impactful vulnerability, because we're not hunting for a bug, we're hunting for an impact that break the contract critical promise.
+
+- Manipulation of governance voting result deviating from voted outcome and resulting in a direct change from intended effect of original results
+- Direct theft of any user funds, whether at-rest or in-motion, other than unclaimed yield
+- Permanent freezing of funds
+- Protocol insolvency
+- Theft of unclaimed yield
+- Theft of unclaimed royalties
+- Permanent freezing of unclaimed yield
+- Temporary freezing of funds
+- Smart contract unable to operate due to lack of token funds
+- Block stuffing
+- Griefing (e.g. no profit motive for an attacker, but damage to the users or the protocol)
+- Unbounded gas consumption
+- Contract fails to deliver promised returns, but doesn't lose value
+
 ## HIGH-LEVEL PROPERTIES EXAMPLE
 
-This is a simplified example based on a simple bank system:
-The balance of any single (arbitrary) user should be no more than
-the total funds of the bank.
-
-```solidity
-invariant oneIsNotMoreThanAll(address user)
-    getUserFunds(user) <= getTotalFunds()
-```
+- Manipulation of governance voting result deviating from voted outcome and resulting in a direct change from intended effect of original results
+- Direct theft of any user funds, whether at-rest or in-motion, other than unclaimed yield
+- Permanent freezing of funds
+- Protocol insolvency
+- Theft of unclaimed yield
+- Theft of unclaimed royalties
+- Permanent freezing of unclaimed yield
+- Temporary freezing of funds
+- Smart contract unable to operate due to lack of token funds
+- Block stuffing
+- Griefing (e.g. no profit motive for an attacker, but damage to the users or the protocol)
+- Unbounded gas consumption
+- Contract fails to deliver promised returns, but doesn't lose value
