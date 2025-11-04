@@ -163,6 +163,8 @@ Demonstrating real impact — theft, freezing funds, governance takeover, etc. A
 
 The low-hanging fruit is gone. You are no longer hunting for a mistake in the code; you are hunting for a flaw in the logic. The code can be 100% correct by itself, but the system it creates is exploitable.
 
+The impacts we care about are:
+
 - Manipulation of governance voting result deviating from voted outcome and resulting in a direct change from intended effect of original results
 - Direct theft of any user funds, whether at-rest or in-motion, other than unclaimed yield
 - Permanent freezing of funds
