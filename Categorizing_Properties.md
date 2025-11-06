@@ -13,9 +13,7 @@ We split properties into 5 main types:
 - High-Level Properties
 - Demonstrating real impact — theft, freezing funds, governance takeover, etc.
 
-Thought of the day: in order to create a good
-
-property, you need to think like a good property.
+Thought of the day: in order to create a good property, you need to think like a good property.
 
 ## VALID STATES
 
@@ -40,48 +38,6 @@ Usually, there can be only one valid state at any given time.
 Thus, we also check that a system must always be in exactly
 one of its valid states.
 
-## VALID STATES EXAMPLE
-
-This example is based on this code.
-
-```solidity
-definition meetingPending(bytes32 meetingId) returns bool =
-    getMeetingId(meetingId) != 0 &&
-    getStartTime(meetingId) != 0 &&
-    getEndTime(meetingId) != 0 &&
-    getNumOfParticipents(meetingId) == 0 &&
-    getStatus(meetingId) == 1;
-
-invariant conditionsDistNotExist(bytes32 meetingId)
-    getStatus(meetingId) == 1 <==> meetingPending(meetingId)
-```
-
-## VALID STATES EXAMPLE - ONE STATE AT A TIME
-
-```solidity
-definition meetingPending(bytes32 meetingId) returns bool =
-    getMeetingId(meetingId) != 0 &&
-    getStartTime(meetingId) != 0 &&
-    getEndTime(meetingId) != 0 &&
-    getNumOfParticipents(meetingId) == 0 &&
-    getStatus(meetingId) == 1;
-
-definition meetingStarted(bytes32 meetingId) returns bool =
-    getMeetingId(meetingId) != 0 &&
-    getStartTime(meetingId) != 0 &&
-    getEndTime(meetingId) != 0 &&
-    getNumOfParticipents(meetingId) == 0 &&
-    getStatus(meetingId) == 2;
-
-invariant oneStateAtATime(bytes32 meetingId)
-    meetingPending(meetingId) && !meetingStarted(meetingId)
-    || !meetingPending(meetingId) && meetingStarted(meetingId)
-```
-
-This is a simplified version of the example code. There are 5 valid states
-in the system. The inv will be fully correct only if we extend it to include
-all combinations of the 5 states.
-
 ## STATE TRANSITIONS
 
 We also verify the correctness of transitions between valid
@@ -89,19 +45,6 @@ states. Firstly, we confirm that the valid states change
 according to their correct order in the state machine. Then,
 we verify that the transitions only occur under the right
 conditions, like calls to specific functions or time elapsing.
-
-```solidity
-rule checkUninitializedToPending(method f, uint256 meetingId){
-    env e;
-    calldata args;
-    uint stateBefore = getStateById(e, meetingId);
-    f(e, args);
-    uint stateAfter = getStateById(e, meetingId);
-
-    assert (stateBefore == 0 => (stateAfter == 1 || stateAfter == 0));
-    assert ((stateBefore == 0 && stateAfter == 1) => f.selector == scheduleMeeting(uint256, uint256, uint256).selector);
-}
-```
 
 ## VARIABLE TRANSITIONS
 
@@ -114,26 +57,6 @@ As a simple example, If we had a variable that counts the
 number of transactions that have ever took place in a system, it
 would’ve had to change in a non-decreasing manner
 throughout the system’s life.
-
-## VARIABLE TRANSITIONS EXAMPLE
-
-We can check that after calling deposit, the balance of all users
-and the total balance of the system shouldn’t decrease.
-
-```solidity
-rule depositIncreaseOnly(uint256 amount, env e){
-    uint256 userBalanceBefore = getUserBalance(e.msg.sender);
-    uint256 systemTotalBefore = getTotalSupply();
-
-    deposit(amount);
-
-    uint256 userBalanceAfter = getUserBalance(e.msg.sender);
-    uint256 systemTotalAfter = getTotalSupply();
-
-    assert userBalanceBefore <= userBalanceAfter, "user's balance was decreased";
-    assert systemTotalBefore <= systemTotalAfter, "systems's balance was decreased";
-}
-```
 
 ## HIGH-LEVEL PROPERTIES
 
@@ -161,7 +84,7 @@ this property solvency.
 
 Demonstrating real impact — theft, freezing funds, governance takeover, etc. A "promise" is a statement about the protocol that must always be true for it to be secure. If we can prove it's false, we've found an impactful vulnerability, because we're not hunting for a bug, we're hunting for an impact that break the contract critical promise.
 
-The low-hanging fruit is gone. You are no longer hunting for a mistake in the code; you are hunting for a flaw in the logic. The code can be 100% correct by itself, but the system it creates is exploitable.
+We're no longer hunting for a mistake in the code; you are hunting for a flaw in the logic. The code can be 100% correct by itself, but the system it creates is exploitable.
 
 The impacts we care about are:
 
@@ -179,11 +102,11 @@ The impacts we care about are:
 - Unbounded gas consumption
 - Contract fails to deliver promised returns, but doesn't lose value
 
-For "query" the code by adopting an attacker's mindset and asking a specific set of "what if" questions. You're no longer a developer reading for correctness; you are an attacker looking for an assumption to break.
+Explore the code by adopting an attacker's mindset and asking a specific set of "what if" questions. You're no longer a developer reading for correctness; you are an attacker looking for an assumption to break.
 
 Here is the tactical process for how to "query" the codebase to find those impacts.
 
-The Methodology: Impact-Driven Interrogation
+The Methodology: Impact-Driven formal verification Interrogation
 
 The process is:
  * Pick an Impact (e.g., "Direct theft of funds").
@@ -236,4 +159,4 @@ Your "Queries":
  * Q: Can I make this function cost a lot?
    * Find: Look for SSTORE (writing to storage) inside a loop.
    * Analyze: If I call a function that loops 100 times and each loop writes to a new storage slot, the gas cost will be enormous. If I can make other users pay that gas, it's a griefing attack.
-By asking these targeted questions, you force the code to "confess" its weaknesses. You're no longer just reading; you're actively hunting for the specific lines that break the protocol's promises.
+By asking these targeted questions, you force the code to "confess" its weaknesses. You're no longer just reading; you're actively hunting for the specific lines that break the protocol's promises. This mindset shift is crucial for finding impactful vulnerabilities.
