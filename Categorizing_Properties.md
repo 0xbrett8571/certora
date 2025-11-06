@@ -11,9 +11,11 @@ We split properties into 5 main types:
 - State Transitions
 - Variable Transitions
 - High-Level Properties
-- Demonstrating real impact — theft, freezing funds, governance takeover, etc.
+- Demonstrating real impact — theft, freezing funds, governance takeover, etc. A "promise" is a statement about the protocol that must always be true for it to be secure. If we can prove it's false, we've found an impactful vulnerability, because we're not hunting for a bug, we're hunting for an impact that break the contract critical promise.
 
-Thought of the day: in order to create a good property, you need to think like a good property.
+Thought of the day:
+
+In order to create a good property, you need to think like a good property - - - creator. This means you need to think like an attacker. 
 
 ## VALID STATES
 
@@ -25,7 +27,7 @@ For example, a system can be in one of the following states:
 - doesn't exist
 - was created
 - is active
-- is finished
+- is finished 
 
 ## VALID STATES
 
@@ -66,7 +68,7 @@ high-level property.
 It doesn’t cover any tangible part of the system like
 the aforementioned types (state, variable, or
 transition). However, it does try to cover the whole
-system from the users’ point of view.
+system from the users’ point of view. 
 
 ## HIGH-LEVEL PROPERTIES EXAMPLE
 
@@ -80,14 +82,17 @@ total balance of all clients' accounts should remain the same”.
 
 This property makes sure that no assets are disappearing or
 being created out of nowhere (unintentionally). We often call
-this property solvency.
+this property solvency. 
+
+## DEMONSTRATING REAL IMPACT
 
 Demonstrating real impact — theft, freezing funds, governance takeover, etc. A "promise" is a statement about the protocol that must always be true for it to be secure. If we can prove it's false, we've found an impactful vulnerability, because we're not hunting for a bug, we're hunting for an impact that break the contract critical promise.
 
 We're no longer hunting for a mistake in the code; you are hunting for a flaw in the logic. The code can be 100% correct by itself, but the system it creates is exploitable.
 
-The impacts we care about are:
+The impacts we care about include:
 
+- Direct theft of funds
 - Manipulation of governance voting result deviating from voted outcome and resulting in a direct change from intended effect of original results
 - Direct theft of any user funds, whether at-rest or in-motion, other than unclaimed yield
 - Permanent freezing of funds
