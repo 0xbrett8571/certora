@@ -15,7 +15,7 @@ We split properties into 5 main types:
 
 Thought of the day:
 
-In order to create a good property, you need to think like a good property - - - creator. This means you need to think like an attacker. 
+In order to create a good property, you need to think like a good property creator. This means you need to think like an attacker. 
 
 ## VALID STATES
 
@@ -117,7 +117,7 @@ The process is:
  * Pick an Impact (e.g., "Direct theft of funds").
  * Formulate a "Query" (e.g., "Where does this contract approve other contracts to spend its tokens?").
  * Find the Code: For keywords related to your query (e.g., search for .approve().
- * Analyze the Result: Look at the lines of code the search returned. This is your answer. Ask: "Is this safe? Can I control the spender or amount?"
+ * Analyze the Result: Look at the lines of code the search returned. This is your answer. Ask: "Is this safe? Can I control the spender or amount?" I'm an economic exploit hunter. I'm looking for "unfair" rules that can be exploited, even if the code is 100% "secure." My goal is to find a mismatch between the expected rules and the actual rules of the game.
 
 1. How to Query for: Theft of Funds / Insolvency
 These impacts are about moving value. Your questions should hunt for any function that moves or values assets.
