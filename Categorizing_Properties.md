@@ -125,3 +125,4 @@ When you look at a new contract, fill in these blanks to generate your property 
 2.  **The Keys:** Who can move the money? $\rightarrow$ Write **Access Control Rules**.
 3.  **The Clock:** Does time matter (vesting, voting)? $\rightarrow$ Write **Monotonicity Rules** for timestamps/blocks.
 4.  **The Attack:** If I wanted to steal, I would try to decrement my balance *after* withdrawing. $\rightarrow$ Write a **State Transition Rule** proving `balance` updates *before* or *during* the transfer.
+5.  **The Ghost:** Is there any global state I need to track? $\rightarrow$ Define **Ghost Variables** to track totals.
