@@ -179,3 +179,7 @@ You are done with this phase **only if**:
 ### One-Line Litmus Test
 
 > **If it already looks like CVL, you skipped a step.**
+
+> 🚫 **Anti-Pattern:** Any statement that can be translated directly into CVL without additional modeling decisions is too concrete for this phase.
+
+This guards the boundary.
